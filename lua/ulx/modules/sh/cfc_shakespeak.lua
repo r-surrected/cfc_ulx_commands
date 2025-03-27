@@ -59,7 +59,12 @@ local transformations = {
     ["happy"] = "joyous",
     ["ever"] = "e'er",
     ["always"] = "at each moment",
-    ["there"] = "thence"
+    ["there"] = "thence",
+    ["skibidi"] = "privy-wight",
+    ["sigma"] = "sigmatus",
+    ["rizzler"] = "heartmaster",
+    ["based"] = "truth-stead",
+    ["that"] = "yond",
 }
 
 function tableLookup( t )
@@ -89,9 +94,9 @@ local function transform( sentence )
                 local letters = word:sub(1, punctuationStart - 1)
                 local punctuation = word:sub(punctuationStart)
 
-                table.insert( transformedWords, letters .. (letters:EndsWith("e") or letters:EndsWith("i") ) and "th" or "eth" .. punctuation )
+                table.insert( transformedWords, letters ..( (letters:EndsWith("e") or letters:EndsWith("i") ) and "th" or "eth" ) .. punctuation )
             else
-                table.insert( transformedWords, word .. (word:EndsWith("e") or word:EndsWith("i") ) and "th" or "eth" .. punctuation)
+                table.insert( transformedWords, word ..( (word:EndsWith("e") or word:EndsWith("i") ) and "th" or "eth" ) .. punctuation)
             end
         else
             table.insert( transformedWords, word )
