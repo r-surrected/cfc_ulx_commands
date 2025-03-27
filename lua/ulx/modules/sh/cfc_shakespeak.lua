@@ -66,12 +66,6 @@ function tableLookup( t )
     return lookup
 end
 
-function endsWithPunctuation(word)
-    local punctuations = {".", ",", "!", "?", ";", ":", "'", "\"", "(", ")", "[", "]", "{", "}", "<", ">", "-"}
-    local lastChar = word:sub(-1)
-    return punctuations[lastChar] ~= nil 
-end
-
 local function transform( sentence )
     sentence = string.lower( sentence )
 
@@ -88,7 +82,7 @@ local function transform( sentence )
             if punctuationStart then
                 local letters = word:sub(1, punctuationStart - 1)
                 local punctuation = word:sub(punctuationStart)
-                
+
                 table.insert( transformedWords, string.format("%s%s%s", letters, (letters:EndsWith("e") or letters:EndsWith("i") ) and "th" or "eth" , punctuation))
             else
                 table.insert( transformedWords, string.format("%s%s", word, (word:EndsWith("e") or word:EndsWith("i") ) and "th" or "eth" ))
