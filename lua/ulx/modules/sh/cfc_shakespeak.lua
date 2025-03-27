@@ -2,6 +2,7 @@ local transformations = {
     ["you"] = "thou", 
     ["your"] = "thy", 
     ["yours"] = "thine", 
+    ["you're"] = "thou art",
     ["my"] = "mine",
     ["are"] = "art", 
     ["is"] = "be", 
@@ -53,7 +54,12 @@ local transformations = {
     ["year"] = "twelvemonth",
     ["child"] = "lad",
     ["kid"] = "lad",
-
+    ["let"] = "alloweth",
+    ["for"] = "f'r",
+    ["happy"] = "joyous",
+    ["ever"] = "e'er",
+    ["always"] = "at each moment",
+    ["there"] = "thence"
 }
 
 function tableLookup( t )
@@ -76,16 +82,16 @@ local function transform( sentence )
     local transformedWords = {}
     
     for word in sentence:gmatch( "%S+" ) do
-        if not tableLookup(transformations)[word] and math.random() < 0.2 then
+        if not tableLookup(transformations)[word] then
             local punctuationStart = word:find("%p")
 
             if punctuationStart then
                 local letters = word:sub(1, punctuationStart - 1)
                 local punctuation = word:sub(punctuationStart)
 
-                table.insert( transformedWords, string.format("%s%s%s", letters, (letters:EndsWith("e") or letters:EndsWith("i") ) and "th" or "eth" , punctuation))
+                table.insert( transformedWords, letters .. (letters:EndsWith("e") or letters:EndsWith("i") ) and "th" or "eth" .. punctuation )
             else
-                table.insert( transformedWords, string.format("%s%s", word, (word:EndsWith("e") or word:EndsWith("i") ) and "th" or "eth" ))
+                table.insert( transformedWords, word .. (word:EndsWith("e") or word:EndsWith("i") ) and "th" or "eth" .. punctuation)
             end
         else
             table.insert( transformedWords, word )
@@ -110,8 +116,8 @@ local function setShakespeak( caller, targetPlayers, unSet )
             targetedPlayers[ply] = nil
         end
     end
-
-    local message = shouldSet and "#A granteth #T shakespearean manners" or "#A restoreth #T to thine former self"
+    -- theire is not a typo!!!
+    local message = shouldSet and "#A granteth #T shakespearean manners" or "#A restoreth #T to theire former self"
 
     ulx.fancyLogAdmin( caller, message, targetPlayers )
 end
