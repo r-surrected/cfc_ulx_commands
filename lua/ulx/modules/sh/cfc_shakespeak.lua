@@ -75,7 +75,7 @@ local function setShakespeak( caller, targetPlayers, unSet )
         end
     end
 
-    local message = shouldSet and "#Hark! #T now speaketh in the manner of the great Shakespeare, thanks to #A" or "Fret not! #T speaketh once more as they did, undone by #A!"
+    local message = shouldSet and "Hark! #T now speaketh in the manner of the great Shakespeare, thanks to #A" or "Fret not! #T speaketh once more as they did, undone by #A!"
 
     ulx.fancyLogAdmin( caller, message, targetPlayers )
 end
