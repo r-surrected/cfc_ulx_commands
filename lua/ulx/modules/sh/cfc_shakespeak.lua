@@ -37,8 +37,40 @@ local transformations = {
     ["come"] = "hither",
     ["go"] = "hence", 
     ["stop"] = "halt", 
-    ["wait"] = "bide"
+    ["wait"] = "bide",
+    ["i"] = "I doth",
+    ["we"] = "we doth",
+    ["should"] = "shouldst",
+    ["can"] = "canst",
+    ["cannot"] = "canst not",
+    ["might"] = "mightst",
+    ["would"] = "wouldst",
+    ["better"] = "bettr'd",
+    ["heart"] = "h'rt",
+    ["heaven"] = "heav'n",
+    ["time"] = "hour",
+    ["wealth"] = "treasure",
+    ["year"] = "twelvemonth",
+    ["child"] = "lad",
+    ["kid"] = "lad",
+
 }
+
+function tableLookup( t )
+    local lookup = {}
+    
+    for i,v in pairs(t) do
+        lookup[v] = true
+    end
+    
+    return lookup
+end
+
+function endsWithPunctuation(word)
+    local punctuations = {".", ",", "!", "?", ";", ":", "'", "\"", "(", ")", "[", "]", "{", "}", "<", ">", "-"}
+    local lastChar = word:sub(-1)
+    return punctuations[lastChar] ~= nil 
+end
 
 local function transform( sentence )
     sentence = string.lower( sentence )
@@ -48,9 +80,19 @@ local function transform( sentence )
     end
 
     local transformedWords = {}
+    
     for word in sentence:gmatch( "%S+" ) do
-        if not transformations[word] and math.random() < 0.2 then
-            table.insert( transformedWords, word + ( word:EndsWith("e") or word:EndsWith("i") ) and "th" or "eth" ) -- if its not a word that we have a transformation for, there's a 20% chance we'll add "eth" to the end of it
+        if not tableLookup(transformations)[word] and math.random() < 0.2 then
+            local punctuationStart = word:find("%p")
+
+            if punctuationStart then
+                local letters = word:sub(1, punctuationStart - 1)
+                local punctuation = word:sub(punctuationStart)
+                
+                table.insert( transformedWords, string.format("%s%s%s", letters, (letters:EndsWith("e") or letters:EndsWith("i") ) and "th" or "eth" , punctuation))
+            else
+                table.insert( transformedWords, string.format("%s%s", word, (word:EndsWith("e") or word:EndsWith("i") ) and "th" or "eth" ))
+            end
         else
             table.insert( transformedWords, word )
         end
